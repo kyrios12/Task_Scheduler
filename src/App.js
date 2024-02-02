@@ -24,7 +24,55 @@ function App(){
     msg:'',
     type:''
   });
-
+  const handleSubmit = (e)=>{
+    e.preventDefault();
+    if(!name){
+      showAlert(true,'danger','please Enter Value');
+    }else if(name && isEditing){
+      // Check if there is something in value and if editing is true
+      setList(
+        list.map((item)=>{
+          if(item.id === editId){
+            return {...item,title: name};
+          }
+          return item;
+        })
+      );
+      setName("");
+      setEditId(null);
+      setIsEditing(false);
+      showAlert(true,'success','value changed');
+    }else{
+      showAlert(true,'success','new task added');
+      const newItem = {
+        id: new Date().getTime().toString(),
+        title: name,
+      };
+      setList([...list,newItem]);
+      setName("");
+    }
+  };
+    const showAlert = (show=false, type="",msg="")=>{
+      // Default parameters
+      setAlert({show,type,msg});
+    };
+    const clearList = ()=>{
+      showAlert(true,'danger','empty list');
+      setList([]);
+    };
+    const removeItem = (id)=>{
+      showAlert(true,'danger',"task removed");
+      setList(list.filter((item)=>item.id!== id));
+    };
+    const editItem = (id)=>{
+      const specificItem = list.find((item)=>item.id === id);
+      setIsEditing(true);
+      setEditId(id);
+      setName(specificItem.title);
+    };
+    useEffect(()=>{
+      localStorage.setItem('list',JSON.stringify(list));
+    },[list]);
 
 
   return(
