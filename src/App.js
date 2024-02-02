@@ -4,7 +4,7 @@ import './App.css';
 import Todo from "./components/Todo";
 import image from './todo_img.png';
 
-
+// To store data and avoid data loss during page refresh  
 const getLocalStorage = ()=>{
   let list = localStorage.getItem('list');
   if(list){
